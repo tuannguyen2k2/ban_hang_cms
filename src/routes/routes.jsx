@@ -1,19 +1,27 @@
-import { Routes, BrowserRouter, Route } from "react-router-dom";
+import { Routes, BrowserRouter, Route, Outlet } from "react-router-dom";
 
 import AppNavigate from "../modules/main/AppNavigate";
 
 import routes from ".";
+import MainLayout from "../modules/main/MainLayout";
 
 const routesArray = Object.values(routes);
 
 const AppRoutes = () => {
   const renderRoute = (route) => {
+    const Component = route.component;
     return (
       <Route
         key={route.path || "not-found"}
         path={route.path}
         index={route.index}
-        Component={route.component}
+        element={
+          <MainLayout>
+            <Component>
+              <Outlet />
+            </Component>
+          </MainLayout>
+        }
       />
     );
   };
