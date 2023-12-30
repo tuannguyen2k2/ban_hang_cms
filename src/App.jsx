@@ -1,7 +1,18 @@
+import { ConfigProvider } from "antd";
 import AppRoutes from "./routes/routes";
 
 function App() {
-  return <AppRoutes />;
+  return (
+    <ConfigProvider
+      theme={{
+        token: {
+          fontFamily: "Mulish",
+        },
+      }}
+    >
+      <AppRoutes />
+    </ConfigProvider>
+  );
 }
 
 export default App;

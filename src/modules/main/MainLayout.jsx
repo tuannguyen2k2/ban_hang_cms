@@ -1,13 +1,15 @@
 /* eslint-disable react/prop-types */
 import { Layout } from "antd";
+import NavSider from "./NavSider";
+import AppHeader from "./AppHeader";
 
 const MainLayout = ({ children }) => {
-  const { Content, Footer, Sider, Header } = Layout;
+  const { Content, Footer } = Layout;
   return (
     <Layout>
-      <Header />
+      <AppHeader />
       <Layout>
-        <Sider />
+        <NavSider width={250} />
         <Layout>
           <Content>
             <div>{children}</div>
