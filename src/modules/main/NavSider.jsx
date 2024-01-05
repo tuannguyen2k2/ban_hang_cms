@@ -58,6 +58,7 @@ const NavSider = ({ collapsed, onCollapse, width }) => {
 
   return (
     <Sider
+      style={{ height: "calc(100vh - 48px - 64px)" }}
       collapsible
       collapsed={collapsed}
       width={width}

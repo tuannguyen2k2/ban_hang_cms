@@ -16,7 +16,7 @@ const MainLayout = ({ children }) => {
           </Content>
         </Layout>
       </Layout>
-      <Footer></Footer>
+      <Footer style={{backgroundColor: 'black'}}></Footer>
     </Layout>
   );
 };
