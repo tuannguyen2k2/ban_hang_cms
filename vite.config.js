@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import eslintPlugin from "vite-plugin-eslint";
 
 // https://vitejs.dev/config/
+// console.log(import.meta.env.VITE_API)
 export default defineConfig({
   plugins: [
     react(),

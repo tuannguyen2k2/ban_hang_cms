@@ -3,3 +3,5 @@ export const navigateTypeEnum = {
   POP: "POP",
   REPLACE: "REPLACE",
 };
+
+export const apiUrl = import.meta.env.VITE_API
