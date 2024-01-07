@@ -1,5 +1,10 @@
+import apiConfig from "../../constants/apiConfig";
+import useFetch from "../../hooks/useFetch";
+
 const Home = () => {
-  console.log(import.meta.env.VITE_API);
+  const { data } = useFetch(apiConfig.category.getAll, { immediate: true });
+
+  console.log(data);
   //
   return <div>Home</div>;
 };
