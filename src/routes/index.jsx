@@ -1,12 +1,13 @@
-import Home from "../modules/home";
-
+import categoryRoutes from "../modules/category/routes";
+import productRoutes from "../modules/product/routes";
+import CategoryListPage from "../modules/category";
 const routes = {
   homePage: {
     path: "/",
-    component: Home,
-    auth: true,
-    title: "Home",
+    component: CategoryListPage,
   },
+  ...categoryRoutes,
+  ...productRoutes,
 };
 
 export default routes;
