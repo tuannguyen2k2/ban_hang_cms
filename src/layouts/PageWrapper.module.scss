@@ -1,0 +1,29 @@
+.pageWrapper {
+    background-color: #f0f2f5;
+
+    .pageHeader {
+        padding: 16px 20px;
+
+        .breadcrumbLast {
+            color: #000000d9;
+        }
+
+        .pageTitle {
+            margin-top: 16px;
+        }
+
+        &.hasTab {
+            padding-bottom: 0;
+        }
+
+        .tab {
+            > [class~='ant-tabs-nav'] {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .pageContent {
+        padding: 0 8px 8px 8px;
+    }
+}

@@ -1,12 +1,8 @@
-import apiConfig from "../../constants/apiConfig";
-import useFetch from "../../hooks/useFetch";
+import { Navigate } from "react-router-dom";
+import routes from "../../routes";
 
-const Home = () => {
-  const { data } = useFetch(apiConfig.category.getAll, { immediate: true });
-
-  console.log(data);
-  //
-  return <div>Home</div>;
+const HomePage = () => {
+  return <Navigate to={routes.categoryListPage.path} />;
 };
 
-export default Home;
+export default HomePage;

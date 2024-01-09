@@ -6,7 +6,7 @@ const baseHeader = {
 
 const apiConfig = {
   category: {
-    getAll: {
+    getList: {
       baseURL: `${apiUrl}category`,
       method: "GET",
       headers: baseHeader,
