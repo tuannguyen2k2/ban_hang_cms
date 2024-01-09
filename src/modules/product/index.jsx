@@ -10,7 +10,7 @@ const ProductListPage = () => {
   console.log(data);
   const breadCrumbs = [
     {
-      breadcrumbName: "Danh mục",
+      breadcrumbName: "Sản phẩm",
     },
   ];
   const columns = [
