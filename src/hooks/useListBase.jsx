@@ -1,9 +1,12 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useQueryParams from "./useQueryParams";
 import useFetch from "./useFetch";
 import { useLocation } from "react-router-dom";
 import useNotification from "./useNotification";
-import { DEFAULT_TABLE_ITEM_SIZE, DEFAULT_TABLE_PAGE_START } from "../constants";
+import {
+  DEFAULT_TABLE_ITEM_SIZE,
+  DEFAULT_TABLE_PAGE_START,
+} from "../constants";
 
 const useListBase = ({
   apiConfig = {
@@ -29,7 +32,7 @@ const useListBase = ({
   const [data, setData] = useState(0);
   const [loading, setLoading] = useState(false);
   const { execute: executeGetList } = useFetch(apiConfig.getList);
-//   const { execute: executeDelete } = useFetch(apiConfig.delete);
+  //   const { execute: executeDelete } = useFetch(apiConfig.delete);
   const location = useLocation();
   const { listData } = location.state ?? {};
   const [pagination, setPagination] = useState(
@@ -43,7 +46,7 @@ const useListBase = ({
   );
   const notification = useNotification();
   const { pathname: pagePath } = useLocation();
-//   const navigate = useNavigate();
+  //   const navigate = useNavigate();
   const queryFilter = useMemo(
     () => deserializeParams(queryParams),
     [queryParams]
@@ -94,9 +97,9 @@ const useListBase = ({
     const copyFilter = { ...filter };
 
     const page = parseInt(queryParams.get("page"));
-    copyFilter.page = page > 0 ? page - 1 : DEFAULT_TABLE_PAGE_START;
+    copyFilter.page = page ? page : DEFAULT_TABLE_PAGE_START;
 
-    copyFilter.size = options.pageSize;
+    copyFilter.pageSize = options.pageSize;
 
     return copyFilter;
   };
@@ -118,6 +121,15 @@ const useListBase = ({
   const handleFilterSearchChange = (values) => {
     mixinFuncs.changeFilter(values);
   };
+  useEffect(() => {
+    mixinFuncs.getList();
+    const page = parseInt(queryFilter.page);
+    if (page > 1 && page !== pagination.current) {
+      setPagination((p) => ({ ...p, current: page }));
+    } else if (page <= 1 || isNaN(page)) {
+      setPagination((p) => ({ ...p, current: 1 }));
+    }
+  }, [queryParams, pagePath]);
 
   const overrideHandler = () => {
     const centralizedHandler = {
