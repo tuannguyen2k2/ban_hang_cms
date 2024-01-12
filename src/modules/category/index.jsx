@@ -5,6 +5,7 @@ import useListBase from "../../hooks/useListBase";
 import ListPage from "../../layouts/ListPage";
 import PageWrapper from "../../layouts/PageWrapper";
 import locales from "../../locales";
+import { convertIsoToLocalTime } from "../../utils/formatDate";
 
 const CategoryListPage = () => {
   const { data, loading, mixinFuncs, pagination } = useListBase({
@@ -29,10 +30,16 @@ const CategoryListPage = () => {
     {
       title: locales.createdAt,
       dataIndex: "createdAt",
+      render: (createdAt) => {
+        return convertIsoToLocalTime(createdAt);
+      },
     },
     {
       title: locales.updatedAt,
       dataIndex: "updatedAt",
+      render: (updatedAt) => {
+        return convertIsoToLocalTime(updatedAt);
+      },
     },
   ];
   return (
