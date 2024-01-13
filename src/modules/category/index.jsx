@@ -17,7 +17,7 @@ const CategoryListPage = () => {
   });
   console.log(data);
 
-  const breadCrumbs = [
+  const breadcrumbs = [
     {
       breadcrumbName: locales.category,
     },
@@ -41,10 +41,15 @@ const CategoryListPage = () => {
         return convertIsoToLocalTime(updatedAt);
       },
     },
+    mixinFuncs.renderActionColumn(
+      { edit: true, delete: true },
+      { width: "150px" }
+    ),
   ];
   return (
-    <PageWrapper routes={breadCrumbs}>
+    <PageWrapper breadcrumbs={breadcrumbs}>
       <ListPage
+        actionBar={mixinFuncs.renderActionBar()}
         baseTable={
           <BaseTable
             columns={columns}
