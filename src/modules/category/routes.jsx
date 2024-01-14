@@ -1,5 +1,5 @@
 import CategoryListPage from ".";
-import CategorySavePage from "./categorySavePage";
+import CategorySavePage from "./CategorySavePage";
 
 export default {
   categoryListPage: {
