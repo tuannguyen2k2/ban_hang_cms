@@ -1,12 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
-import useQueryParams from "./useQueryParams";
-import useFetch from "./useFetch";
-import { useLocation } from "react-router-dom";
-import useNotification from "./useNotification";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Button, Divider, Modal } from "antd";
+import React, { useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import BaseTooltip from "../components/form/BaseTooltip";
 import {
   DEFAULT_TABLE_ITEM_SIZE,
   DEFAULT_TABLE_PAGE_START,
 } from "../constants";
+import useFetch from "./useFetch";
+import useNotification from "./useNotification";
+import useQueryParams from "./useQueryParams";
+import locales from "../locales";
+import ActionBar from "../components/elements/ActionBar";
 
 const useListBase = ({
   apiConfig = {
@@ -20,6 +25,7 @@ const useListBase = ({
     objectName: "",
     pageSize: DEFAULT_TABLE_ITEM_SIZE,
     paramsHolder: {},
+    hasModal: false,
   },
   override,
 } = {}) => {
@@ -32,7 +38,10 @@ const useListBase = ({
   const [data, setData] = useState(0);
   const [loading, setLoading] = useState(false);
   const { execute: executeGetList } = useFetch(apiConfig.getList);
-  //   const { execute: executeDelete } = useFetch(apiConfig.delete);
+  const { execute: executeDelete } = useFetch(apiConfig.delete);
+  const [openModal, setOpenModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [dataRowSelected, setDataRowSelected] = useState();
   const location = useLocation();
   const { listData } = location.state ?? {};
   const [pagination, setPagination] = useState(
@@ -46,7 +55,7 @@ const useListBase = ({
   );
   const notification = useNotification();
   const { pathname: pagePath } = useLocation();
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
   const queryFilter = useMemo(
     () => deserializeParams(queryParams),
     [queryParams]
@@ -58,7 +67,7 @@ const useListBase = ({
     };
   };
   const handleGetListError = () => {
-    notification({ type: "error", message: "Get list error" });
+    notification({ type: "error", message: locales.getListFail });
   };
 
   const onCompletedGetList = (response) => {
@@ -72,7 +81,7 @@ const useListBase = ({
     return {};
   };
   const handleFetchList = (params, isReload) => {
-    if (!apiConfig.getList) throw new Error("apiConfig.getList is not defined");
+    if (!apiConfig.getList) throw new Error(locales.apiGetListNotFound);
     if (listData && !isReload) {
       setData(listData.data);
       setPagination(listData.pagination);
@@ -117,10 +126,207 @@ const useListBase = ({
     queryParams.set("page", page.current);
     setQueryParams(queryParams);
   }
+  const handleDeleteItemError = (error) => {
+    console.log(error);
+    notification({
+      type: "error",
+      message: locales.deleteFail.replace(
+        "${objectName}",
+        options.objectName.toLowerCase()
+      ),
+    });
+  };
 
+  const onDeleteItemCompleted = () => {
+    const currentPage = queryParams.get("page");
+    if (data.length === 1 && currentPage > 1) {
+      queryParams.set("page", currentPage - 1);
+      setQueryParams(queryParams);
+    } else {
+      mixinFuncs.getList(true);
+    }
+  };
+
+  const handleDeleteItem = (id) => {
+    setLoading(true);
+    executeDelete({
+      pathParams: { id },
+      onCompleted: () => {
+        mixinFuncs.onDeleteItemCompleted();
+
+        notification({
+          type: "success",
+          message: locales.deleteSuccess.replace(
+            "${objectName}",
+            options.objectName.toLowerCase()
+          ),
+        });
+      },
+      onError: (error) => {
+        mixinFuncs.handleDeleteItemError(error);
+        setLoading(false);
+      },
+    });
+  };
+
+  const showDeleteItemConfirm = (id) => {
+    if (!apiConfig.delete) throw new Error(locales.apiDeleteNotFound);
+
+    Modal.confirm({
+      title: locales.confirmDelete.replace(
+        "${objectName}",
+        options.objectName.toLowerCase()
+      ),
+      content: "",
+      okText: locales.yes,
+      cancelText: locales.no,
+      centered: true,
+      onOk: () => {
+        mixinFuncs.handleDeleteItem(id);
+      },
+    });
+  };
+
+  const actionColumnButtons = (additionalButtons = {}) => ({
+    delete: ({ id, buttonProps }) => {
+      return (
+        <BaseTooltip type="delete" objectName={options.objectName}>
+          <Button
+            {...buttonProps}
+            type="link"
+            onClick={(e) => {
+              e.stopPropagation();
+              mixinFuncs.showDeleteItemConfirm(id);
+            }}
+            style={{ padding: 0 }}
+          >
+            <DeleteOutlined style={{ color: "red" }} />
+          </Button>
+        </BaseTooltip>
+      );
+    },
+
+    edit: ({ buttonProps, ...dataRow }) => {
+      return (
+        <BaseTooltip type={"edit"} objectName={options.objectName}>
+          <Button
+            {...buttonProps}
+            onClick={(e) => {
+              if (options.hasModal) {
+                setOpenModal(true);
+                setIsEditing(true);
+                setDataRowSelected(dataRow);
+              } else {
+                e.stopPropagation();
+                navigate(`${mixinFuncs.getItemDetailLink(dataRow)}`, {
+                  state: {
+                    action: "edit",
+                    prevPath: location.pathname,
+                    listData: getListData,
+                  },
+                });
+              }
+            }}
+            type="link"
+            style={{ padding: 0 }}
+          >
+            {<EditOutlined color="red" />}
+          </Button>
+        </BaseTooltip>
+      );
+    },
+    ...additionalButtons,
+  });
+  const additionalActionColumnButtons = () => {
+    return {};
+  };
+
+  const createActionColumnButtons = (actions, data) => {
+    const actionButtons = [];
+    const buttons = actionColumnButtons(
+      mixinFuncs.additionalActionColumnButtons()
+    );
+
+    Object.entries(actions).forEach(([key, value]) => {
+      let _value = value;
+      if (typeof value === "function") {
+        _value = value(data);
+      }
+      if (_value && buttons[key]) {
+        actionButtons.push(buttons[key]);
+      }
+    });
+
+    return actionButtons;
+  };
+  const renderActionColumn = (
+    action = { edit: false, delete: false },
+    columnsProps,
+    buttonProps
+  ) => {
+    return {
+      align: "center",
+      ...columnsProps,
+      title: locales.action,
+      render: (data) => {
+        const buttons = [];
+        const actionButtons = mixinFuncs.createActionColumnButtons(
+          action,
+          data
+        );
+        actionButtons.forEach((ActionItem) => {
+          if (ActionItem({ ...data, ...buttonProps })) {
+            buttons.push(ActionItem);
+          }
+        });
+
+        return (
+          <span>
+            {buttons.map((ActionItem, index) => (
+              <React.Fragment key={index}>
+                {index > 0 && <Divider type="vertical" />}
+                <span>
+                  {ActionItem({ ...data, ...buttonProps }) ? (
+                    <ActionItem {...data} {...buttonProps} />
+                  ) : null}
+                </span>
+              </React.Fragment>
+            ))}
+          </span>
+        );
+      },
+    };
+  };
+  const getListData = useMemo(() => {
+    return {
+      data,
+      pagination,
+    };
+  }, [data, pagination]);
   const handleFilterSearchChange = (values) => {
     mixinFuncs.changeFilter(values);
   };
+  const getItemDetailLink = (dataRow) => {
+    return `${pagePath}/${dataRow.id}`;
+  };
+
+  const getCreateLink = () => {
+    return `${pagePath}/create`;
+  };
+  const renderActionBar = ({ type, style, buttons } = {}) => {
+    return (
+      <ActionBar
+        buttons={buttons}
+        createLink={mixinFuncs.getCreateLink()}
+        location={location}
+        type={type}
+        style={style}
+        modal={options.hasModal}
+        setOpenModal={setOpenModal}
+      />
+    );
+  };
+
   useEffect(() => {
     mixinFuncs.getList();
     const page = parseInt(queryFilter.page);
@@ -140,10 +346,22 @@ const useListBase = ({
       getList,
       changeFilter,
       changePagination,
+      createActionColumnButtons,
       onCompletedGetList,
       handleFilterSearchChange,
       prepareGetListPathParams,
       setQueryParams,
+      renderActionColumn,
+      additionalActionColumnButtons,
+      handleDeleteItem,
+      handleDeleteItemError,
+      showDeleteItemConfirm,
+      onDeleteItemCompleted,
+      renderActionBar,
+      getItemDetailLink,
+      getCreateLink,
+      setOpenModal,
+      setIsEditing,
     };
 
     override?.(centralizedHandler);
@@ -154,6 +372,8 @@ const useListBase = ({
   const mixinFuncs = overrideHandler();
 
   return {
+    dataRowSelected,
+    isEditing,
     loading,
     data,
     setData,
@@ -168,6 +388,7 @@ const useListBase = ({
     serializeParams,
     queryParams,
     setQueryParams,
+    openModal,
   };
 };
 

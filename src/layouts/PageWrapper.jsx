@@ -8,38 +8,38 @@ import locales from "../locales";
 const PageWrapper = ({
   loading,
   children,
-  routes = [],
+  breadcrumbs = [],
   tabs,
   onChangeTab,
   activeTab,
 }) => {
   const hasTab = !!tabs?.length;
-  if (routes.length > 0) {
-    routes = [{ breadcrumbName: locales.home, path: "/" }, ...routes];
+  if (breadcrumbs.length > 0) {
+    breadcrumbs = [{ breadcrumbName: locales.home, path: "/" }, ...breadcrumbs];
   }
 
   return (
     <Spin spinning={!!loading} wrapperClassName={styles.pageWrapper}>
       <div className={classNames(styles.pageHeader, hasTab && styles.hasTab)}>
-        {!!routes?.length && (
+        {!!breadcrumbs?.length && (
           <Breadcrumb
-            routes={routes}
-            itemRender={(route) => {
-              const last = routes.indexOf(route) === routes.length - 1;
+            items={breadcrumbs}
+            itemRender={(breadCrumb) => {
+              const last = breadcrumbs.indexOf(breadCrumb) === breadcrumbs.length - 1;
               if (last) {
                 return (
                   <span className={styles.breadcrumbLast}>
-                    {route.breadcrumbName || route.title}
+                    {breadCrumb.breadcrumbName || breadCrumb.title}
                   </span>
                 );
-              } else if (route.path) {
+              } else if (breadCrumb.path) {
                 return (
-                  <Link to={route.path} style={{ color: "#1890ff" }}>
-                    {route.breadcrumbName || route.title}
+                  <Link to={breadCrumb.path} style={{ color: "#1890ff" }}>
+                    {breadCrumb.breadcrumbName || breadCrumb.title}
                   </Link>
                 );
               } else {
-                return <span>{route.breadcrumbName || route.title}</span>;
+                return <span>{breadCrumb.breadcrumbName || breadCrumb.title}</span>;
               }
             }}
           />

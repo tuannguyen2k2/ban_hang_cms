@@ -5,18 +5,28 @@ import useListBase from "../../hooks/useListBase";
 import ListPage from "../../layouts/ListPage";
 import PageWrapper from "../../layouts/PageWrapper";
 import locales from "../../locales";
+import { convertIsoToLocalTime } from "../../utils/formatDate";
+import CategoryModal from "./CategoryModal";
 
 const CategoryListPage = () => {
-  const { data, loading, mixinFuncs, pagination } = useListBase({
+  const {
+    data,
+    loading,
+    mixinFuncs,
+    pagination,
+    openModal,
+    isEditing,
+    dataRowSelected,
+  } = useListBase({
     apiConfig: apiConfig.category,
     options: {
       pageSize: DEFAULT_TABLE_ITEM_SIZE,
       objectName: locales.category,
+      hasModal: true,
     },
   });
-  console.log(data);
 
-  const breadCrumbs = [
+  const breadcrumbs = [
     {
       breadcrumbName: locales.category,
     },
@@ -25,19 +35,41 @@ const CategoryListPage = () => {
     {
       title: locales.name,
       dataIndex: "name",
+      render: (name) => {
+        return (
+          <div
+            onClick={() => {
+              mixinFuncs.setOpenModal(true);
+            }}
+          >
+            {name}
+          </div>
+        );
+      },
     },
     {
       title: locales.createdAt,
       dataIndex: "createdAt",
+      render: (createdAt) => {
+        return convertIsoToLocalTime(createdAt);
+      },
     },
     {
       title: locales.updatedAt,
       dataIndex: "updatedAt",
+      render: (updatedAt) => {
+        return convertIsoToLocalTime(updatedAt);
+      },
     },
+    mixinFuncs.renderActionColumn(
+      { edit: true, delete: true },
+      { width: "150px" }
+    ),
   ];
   return (
-    <PageWrapper routes={breadCrumbs}>
+    <PageWrapper breadcrumbs={breadcrumbs}>
       <ListPage
+        actionBar={mixinFuncs.renderActionBar()}
         baseTable={
           <BaseTable
             columns={columns}
@@ -47,6 +79,14 @@ const CategoryListPage = () => {
             pagination={pagination}
           />
         }
+      />
+      <CategoryModal
+        dataRowSelected={dataRowSelected}
+        isEditing={isEditing}
+        openModal={openModal}
+        setOpenModal={mixinFuncs.setOpenModal}
+        setIsEditing={mixinFuncs.setIsEditing}
+        getList={mixinFuncs.getList}
       />
     </PageWrapper>
   );
