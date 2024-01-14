@@ -22,7 +22,7 @@ const locales = {
   no: "Không",
   addNew: "Thêm mới",
   getListFail: "Lỗi lấy danh sách",
-  titleSavePage: "${action} ${objectName}",
+  titleAction: "${action} ${objectName}",
   closeFormConfirm: "Bạn có muốn đóng trang này ?",
   actionFail: "${action} thất bại",
   requiredField: "Trường bắt buộc",

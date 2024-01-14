@@ -5,7 +5,7 @@ import useBasicForm from "../../hooks/useBasicForm";
 import { Card, Col, Row } from "antd";
 import locales from "../../locales";
 import TextField from "../../components/form/TextField";
-import { BaseForm } from "../../components/form/BaseForm";
+import BaseForm from "../../components/form/BaseForm";
 
 const CategoryForm = (props) => {
   const { formId, actions, dataDetail, onSubmit, setIsChangedFormValues } =
@@ -21,7 +21,6 @@ const CategoryForm = (props) => {
   };
 
   useEffect(() => {
-    console.log(dataDetail);
     form.setFieldsValue({
       ...dataDetail,
     });

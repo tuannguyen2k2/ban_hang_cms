@@ -6,16 +6,25 @@ import ListPage from "../../layouts/ListPage";
 import PageWrapper from "../../layouts/PageWrapper";
 import locales from "../../locales";
 import { convertIsoToLocalTime } from "../../utils/formatDate";
+import CategoryModal from "./CategoryModal";
 
 const CategoryListPage = () => {
-  const { data, loading, mixinFuncs, pagination } = useListBase({
+  const {
+    data,
+    loading,
+    mixinFuncs,
+    pagination,
+    openModal,
+    isEditing,
+    dataRowSelected,
+  } = useListBase({
     apiConfig: apiConfig.category,
     options: {
       pageSize: DEFAULT_TABLE_ITEM_SIZE,
       objectName: locales.category,
+      hasModal: true,
     },
   });
-  console.log(data);
 
   const breadcrumbs = [
     {
@@ -26,6 +35,17 @@ const CategoryListPage = () => {
     {
       title: locales.name,
       dataIndex: "name",
+      render: (name) => {
+        return (
+          <div
+            onClick={() => {
+              mixinFuncs.setOpenModal(true);
+            }}
+          >
+            {name}
+          </div>
+        );
+      },
     },
     {
       title: locales.createdAt,
@@ -59,6 +79,14 @@ const CategoryListPage = () => {
             pagination={pagination}
           />
         }
+      />
+      <CategoryModal
+        dataRowSelected={dataRowSelected}
+        isEditing={isEditing}
+        openModal={openModal}
+        setOpenModal={mixinFuncs.setOpenModal}
+        setIsEditing={mixinFuncs.setIsEditing}
+        getList={mixinFuncs.getList}
       />
     </PageWrapper>
   );

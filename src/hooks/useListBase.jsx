@@ -25,6 +25,7 @@ const useListBase = ({
     objectName: "",
     pageSize: DEFAULT_TABLE_ITEM_SIZE,
     paramsHolder: {},
+    hasModal: false,
   },
   override,
 } = {}) => {
@@ -38,6 +39,9 @@ const useListBase = ({
   const [loading, setLoading] = useState(false);
   const { execute: executeGetList } = useFetch(apiConfig.getList);
   const { execute: executeDelete } = useFetch(apiConfig.delete);
+  const [openModal, setOpenModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [dataRowSelected, setDataRowSelected] = useState();
   const location = useLocation();
   const { listData } = location.state ?? {};
   const [pagination, setPagination] = useState(
@@ -208,14 +212,20 @@ const useListBase = ({
           <Button
             {...buttonProps}
             onClick={(e) => {
-              e.stopPropagation();
-              navigate(`${mixinFuncs.getItemDetailLink(dataRow)}`, {
-                state: {
-                  action: "edit",
-                  prevPath: location.pathname,
-                  listData: getListData,
-                },
-              });
+              if (options.hasModal) {
+                setOpenModal(true);
+                setIsEditing(true);
+                setDataRowSelected(dataRow);
+              } else {
+                e.stopPropagation();
+                navigate(`${mixinFuncs.getItemDetailLink(dataRow)}`, {
+                  state: {
+                    action: "edit",
+                    prevPath: location.pathname,
+                    listData: getListData,
+                  },
+                });
+              }
             }}
             type="link"
             style={{ padding: 0 }}
@@ -311,9 +321,12 @@ const useListBase = ({
         location={location}
         type={type}
         style={style}
+        modal={options.hasModal}
+        setOpenModal={setOpenModal}
       />
     );
   };
+
   useEffect(() => {
     mixinFuncs.getList();
     const page = parseInt(queryFilter.page);
@@ -347,6 +360,8 @@ const useListBase = ({
       renderActionBar,
       getItemDetailLink,
       getCreateLink,
+      setOpenModal,
+      setIsEditing,
     };
 
     override?.(centralizedHandler);
@@ -357,6 +372,8 @@ const useListBase = ({
   const mixinFuncs = overrideHandler();
 
   return {
+    dataRowSelected,
+    isEditing,
     loading,
     data,
     setData,
@@ -371,6 +388,7 @@ const useListBase = ({
     serializeParams,
     queryParams,
     setQueryParams,
+    openModal,
   };
 };
 

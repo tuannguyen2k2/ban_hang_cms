@@ -1,11 +1,12 @@
-import { SaveOutlined, StopOutlined } from "@ant-design/icons";
-import { Button, Col, Modal, Row } from "antd";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
 import locales from "../locales";
 import useFetch from "./useFetch";
 import useNotification from "./useNotification";
-const useSaveBase = ({
+import { Button, Col, Modal, Row } from "antd";
+import { SaveOutlined, StopOutlined } from "@ant-design/icons";
+import { useLocation } from "react-router-dom";
+
+const useModalBase = ({
   apiConfig = {
     getById: null,
     create: null,
@@ -13,18 +14,13 @@ const useSaveBase = ({
   },
   options = {
     objectName: "",
-    getListUrl: "",
+    isEditing: false,
+    dataRowSelected: {},
   },
   override,
+  getList,
+  getFuncOnBack,
 }) => {
-  const navigate = useNavigate();
-  const params = useParams();
-  const location = useLocation();
-  const [detail, setDetail] = useState({});
-  const detailId = params.id;
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isChanged, setIsChanged] = useState(false);
-  const [isEditing, setIsEditing] = useState(params.id !== "create");
   const { execute: executeGet, loading } = useFetch(apiConfig.getById, {
     immediate: false,
   });
@@ -34,19 +30,26 @@ const useSaveBase = ({
   const { execute: executeUpdate } = useFetch(apiConfig.update, {
     immediate: false,
   });
+  const [isChanged, setIsChanged] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [detail, setDetail] = useState({});
+  const location = useLocation();
   const title = locales.titleAction
-    .replace("${action}", isEditing ? locales.edit : locales.add)
-    .replace("${objectName}", options.objectName);
+    .replace("${action}", options.isEditing ? locales.edit : locales.add)
+    .replace("${objectName}", options.objectName.toLowerCase());
   const notification = useNotification();
 
   const mappingData = (response) => {
     if (response.result === true) return response.data;
   };
+  const getFormId = () => {
+    return `form-${location.pathname}`;
+  };
 
   const handleFetchDetail = (params) => {
     executeGet({
       ...params,
-      pathParams: { id: detailId },
+      pathParams: { id: options.dataRowSelected?.id },
       onCompleted: (response) => {
         setDetail(mixinFuncs.mappingData(response));
       },
@@ -55,27 +58,7 @@ const useSaveBase = ({
   };
 
   const getDetail = () => {
-    mixinFuncs.handleFetchDetail(detailId);
-  };
-
-  const getFormId = () => {
-    return `form-${location.pathname}`;
-  };
-
-  const onBack = (isSuccess = true) => {
-    const doBack = () => {
-      if (location?.state?.prevPath === options.getListUrl) {
-        navigate(
-          location?.state?.prevPath + location.search,
-          isSuccess && {
-            state: { listData: location.state.listData },
-          }
-        );
-      } else {
-        navigate(options.getListUrl);
-      }
-    };
-    doBack();
+    mixinFuncs.handleFetchDetail(options.dataRowSelected?.id);
   };
   const prepareCreateData = (data) => {
     return data;
@@ -84,15 +67,15 @@ const useSaveBase = ({
   const prepareUpdateData = (data) => {
     return {
       ...data,
-      id: detail.id,
+      id: options.dataRowSelected?.id,
     };
   };
 
   const onSave = (values, callback) => {
     setIsSubmitting(true);
-    if (isEditing) {
+    if (options.isEditing) {
       executeUpdate({
-        pathParams: { id: detail.id },
+        pathParams: { id: options.dataRowSelected?.id },
         data: mixinFuncs.prepareUpdateData(values),
         onCompleted: mixinFuncs.onSaveCompleted,
         onError: (err) => mixinFuncs.onSaveError(err, callback),
@@ -111,16 +94,17 @@ const useSaveBase = ({
     if (responseData?.data?.errors?.length) {
       mixinFuncs.onSaveError();
     } else {
-      if (isEditing) {
+      if (options.isEditing) {
         mixinFuncs.onUpdateCompleted(responseData);
       } else {
         mixinFuncs.onInsertCompleted(responseData);
       }
+      getList();
     }
   };
 
   const getActionName = () => {
-    return isEditing ? locales.update : locales.addNew;
+    return options.isEditing ? locales.update : locales.addNew;
   };
 
   const onUpdateCompleted = (responseData) => {
@@ -131,7 +115,7 @@ const useSaveBase = ({
           options.objectName.toLowerCase()
         ),
       });
-      mixinFuncs.onBack(false);
+      mixinFuncs.onBack();
     }
   };
 
@@ -143,11 +127,12 @@ const useSaveBase = ({
           options.objectName.toLowerCase()
         ),
       });
-      mixinFuncs.onBack(false);
+      mixinFuncs.onBack();
     }
   };
   const handleShowErrorMessage = () => {
     notification({
+      type: "error",
       message: locales.actionFail.replace("${actionName}", getActionName()),
     });
   };
@@ -162,6 +147,9 @@ const useSaveBase = ({
     if (flag !== isChanged) {
       setIsChanged(flag);
     }
+  };
+  const onBack = () => {
+    getFuncOnBack();
   };
 
   const showCloseFormConfirm = (customDisabledSubmitValue) => {
@@ -191,6 +179,7 @@ const useSaveBase = ({
       customDisabledSubmitValue !== undefined
         ? customDisabledSubmitValue
         : !isChanged;
+
     return (
       <Row justify="end" gutter={12}>
         <Col>
@@ -199,7 +188,8 @@ const useSaveBase = ({
             key="cancel"
             onClick={(e) => {
               e.stopPropagation();
-              mixinFuncs.showCloseFormConfirm();
+              // mixinFuncs.showCloseFormConfirm();
+              onBack();
             }}
             icon={<StopOutlined />}
           >
@@ -216,19 +206,23 @@ const useSaveBase = ({
             disabled={disabledSubmit}
             icon={<SaveOutlined />}
           >
-            {isEditing ? locales.update : locales.addNew}
+            {options.isEditing ? locales.update : locales.addNew}
           </Button>
         </Col>
       </Row>
     );
   };
 
+  useEffect(() => {
+    if (options.isEditing) {
+      mixinFuncs.getDetail();
+    }
+  }, [options.isEditing]);
   const overrideHandler = () => {
     const centralizedHandler = {
       getDetail,
       handleFetchDetail,
       mappingData,
-      getFormId,
       renderActions,
       prepareCreateData,
       prepareUpdateData,
@@ -241,12 +235,12 @@ const useSaveBase = ({
       executeCreate,
       executeUpdate,
       setDetail,
-      setIsEditing,
       handleShowErrorMessage,
       getActionName,
+      setIsSubmitting,
       onBack,
       showCloseFormConfirm,
-      setIsSubmitting,
+      getFormId,
     };
 
     override?.(centralizedHandler);
@@ -255,14 +249,6 @@ const useSaveBase = ({
   };
 
   const mixinFuncs = overrideHandler();
-
-  useEffect(() => {
-    if (params.id) {
-      if (params.id === "create") setIsEditing(false);
-      else mixinFuncs.getDetail();
-    }
-  }, []);
-
   return {
     isChanged,
     detail,
@@ -270,11 +256,9 @@ const useSaveBase = ({
     loading,
     onSave,
     setIsChangedFormValues,
-    isEditing,
     title,
-    setIsEditing,
     isSubmitting,
   };
 };
 
-export default useSaveBase;
+export default useModalBase;

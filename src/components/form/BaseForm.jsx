@@ -1,32 +1,32 @@
 /* eslint-disable react/prop-types */
-import { Form } from 'antd';
-import { formSize } from '../../constants';
+import { Form } from "antd";
+import { formSize } from "../../constants";
 
+const BaseForm = ({
+  formId,
+  onFinish,
+  onChange,
+  form,
+  onValuesChange,
+  children,
+  size = "normal",
 
-export const BaseForm = ({
-    formId,
-    onFinish,
-    onChange,
-    form,
-    onValuesChange,
-    children,
-    size = "normal",
-
-
-    ...props
+  ...props
 }) => {
-    return (
-        <Form
-            style={formSize[size] ? { width: formSize[size] } :  { width: size }}
-            id={formId}
-            onFinish={onFinish}
-            onChange={onChange}
-            form={form}
-            onValuesChange={onValuesChange}
-            layout="vertical"
-            {...props}
-        >
-            {children}
-        </Form>
-    );
+  return (
+    <Form
+      style={formSize[size] ? { width: formSize[size] } : { width: size }}
+      id={formId}
+      onFinish={onFinish}
+      onChange={onChange}
+      form={form}
+      onValuesChange={onValuesChange}
+      layout="vertical"
+      {...props}
+    >
+      {children}
+    </Form>
+  );
 };
+
+export default BaseForm;

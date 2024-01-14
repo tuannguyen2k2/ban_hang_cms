@@ -6,27 +6,43 @@ import { PlusOutlined } from "@ant-design/icons";
 import locales from "../../locales";
 import styles from "./ActionBar.module.scss";
 
-
 function ActionBar({
   createLink,
   location,
   style,
   buttons,
+  modal = false,
+  setOpenModal,
 }) {
   const renderButtons = useCallback(() => {
-    const CreateButton = () => (
-      <Col>
-        <Link
-          to={createLink}
-          state={{ action: "create", prevPath: location.pathname }}
-        >
-          <Button type="primary" style={style}>
-            <PlusOutlined />{" "}
-            {locales.addNew}
-          </Button>
-        </Link>
-      </Col>
-    );
+    const CreateButton = () => {
+      if (modal) {
+        return (
+          <Col>
+            <Button
+              type="primary"
+              style={style}
+              onClick={() => modal && setOpenModal(true)}
+            >
+              <PlusOutlined /> {locales.addNew}
+            </Button>
+          </Col>
+        );
+      } else {
+        return (
+          <Col>
+            <Link
+              to={createLink}
+              state={{ action: "create", prevPath: location.pathname }}
+            >
+              <Button type="primary" style={style}>
+                <PlusOutlined /> {locales.addNew}
+              </Button>
+            </Link>
+          </Col>
+        );
+      }
+    };
     if (!buttons) {
       return <CreateButton />;
     }
