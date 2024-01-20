@@ -188,7 +188,7 @@ const useListBase = ({
   };
 
   const actionColumnButtons = (additionalButtons = {}) => ({
-    delete: ({ id, buttonProps }) => {
+    delete: ({ _id, buttonProps }) => {
       return (
         <BaseTooltip type="delete" objectName={options.objectName}>
           <Button
@@ -196,7 +196,7 @@ const useListBase = ({
             type="link"
             onClick={(e) => {
               e.stopPropagation();
-              mixinFuncs.showDeleteItemConfirm(id);
+              mixinFuncs.showDeleteItemConfirm(_id);
             }}
             style={{ padding: 0 }}
           >
