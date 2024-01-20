@@ -30,6 +30,7 @@ const useModalBase = ({
   const { execute: executeUpdate } = useFetch(apiConfig.update, {
     immediate: false,
   });
+  const id = options?.dataRowSelected?._id;
   const [isChanged, setIsChanged] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [detail, setDetail] = useState({});
@@ -49,7 +50,7 @@ const useModalBase = ({
   const handleFetchDetail = (params) => {
     executeGet({
       ...params,
-      pathParams: { id: options.dataRowSelected?.id },
+      pathParams: { id: id },
       onCompleted: (response) => {
         setDetail(mixinFuncs.mappingData(response));
       },
@@ -58,7 +59,7 @@ const useModalBase = ({
   };
 
   const getDetail = () => {
-    mixinFuncs.handleFetchDetail(options.dataRowSelected?.id);
+    mixinFuncs.handleFetchDetail(id);
   };
   const prepareCreateData = (data) => {
     return data;
@@ -67,7 +68,7 @@ const useModalBase = ({
   const prepareUpdateData = (data) => {
     return {
       ...data,
-      id: options.dataRowSelected?.id,
+      id: id,
     };
   };
 
@@ -75,7 +76,7 @@ const useModalBase = ({
     setIsSubmitting(true);
     if (options.isEditing) {
       executeUpdate({
-        pathParams: { id: options.dataRowSelected?.id },
+        pathParams: { id: id },
         data: mixinFuncs.prepareUpdateData(values),
         onCompleted: mixinFuncs.onSaveCompleted,
         onError: (err) => mixinFuncs.onSaveError(err, callback),
