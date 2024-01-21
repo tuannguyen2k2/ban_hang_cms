@@ -1,8 +1,8 @@
-import ProductListPage from ".";
+import ProductListPage from '.';
 
 export default {
-  productListPage: {
-    path: "/product",
-    component: ProductListPage,
-  },
+    productListPage: {
+        path: '/product',
+        component: ProductListPage,
+    },
 };

@@ -7,15 +7,17 @@ import ListPage from '../../layouts/ListPage';
 import PageWrapper from '../../layouts/PageWrapper';
 import locales from '../../locales';
 import { convertIsoToLocalTime } from '../../utils/formatDate';
-import CategoryModal from './CategoryModal';
 import routes from '../../routes';
-import styles from './category.module.scss';
-const CategoryListPage = () => {
+import KindModal from './KindModal';
+
+const KindListPage = () => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const categoryName = searchParams.get('categoryName');
     const { data, loading, mixinFuncs, pagination, openModal, isEditing, dataRowSelected } = useListBase({
-        apiConfig: apiConfig.category,
+        apiConfig: apiConfig.kind,
         options: {
             pageSize: DEFAULT_TABLE_ITEM_SIZE,
-            objectName: locales.category,
+            objectName: locales.kind,
             hasModal: true,
         },
     });
@@ -25,26 +27,16 @@ const CategoryListPage = () => {
     const breadcrumbs = [
         {
             breadcrumbName: locales.category,
+            path: routes.categoryListPage.path,
+        },
+        {
+            breadcrumbName: locales.kind,
         },
     ];
     const columns = [
         {
             title: locales.name,
             dataIndex: 'name',
-            render: (name, dataRow) => {
-                return (
-                    <button
-                        className={styles.textNavigate}
-                        onClick={() => {
-                            navigate(
-                                routes.kindListPage.path + `?categoryId=${dataRow?._id}&categoryName=${dataRow?.name}`
-                            );
-                        }}
-                    >
-                        {name}
-                    </button>
-                );
-            },
         },
         {
             title: locales.createdAt,
@@ -65,6 +57,7 @@ const CategoryListPage = () => {
     return (
         <PageWrapper breadcrumbs={breadcrumbs}>
             <ListPage
+                title={categoryName}
                 actionBar={mixinFuncs.renderActionBar()}
                 baseTable={
                     <BaseTable
@@ -76,7 +69,7 @@ const CategoryListPage = () => {
                     />
                 }
             />
-            <CategoryModal
+            <KindModal
                 dataRowSelected={dataRowSelected}
                 isEditing={isEditing}
                 openModal={openModal}
@@ -88,4 +81,4 @@ const CategoryListPage = () => {
     );
 };
 
-export default CategoryListPage;
+export default KindListPage;

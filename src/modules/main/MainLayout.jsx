@@ -1,24 +1,24 @@
 /* eslint-disable react/prop-types */
-import { Layout } from "antd";
-import NavSider from "./NavSider";
-import AppHeader from "./AppHeader";
+import { Layout } from 'antd';
+import NavSider from './NavSider';
+import AppHeader from './AppHeader';
 
 const MainLayout = ({ children }) => {
-  const { Content, Footer } = Layout;
-  return (
-    <Layout>
-      <AppHeader />
-      <Layout>
-        <NavSider width={250} />
+    const { Content, Footer } = Layout;
+    return (
         <Layout>
-          <Content>
-            <div>{children}</div>
-          </Content>
+            <AppHeader />
+            <Layout>
+                <NavSider width={250} />
+                <Layout>
+                    <Content>
+                        <div>{children}</div>
+                    </Content>
+                </Layout>
+            </Layout>
+            <Footer style={{ backgroundColor: 'black' }}></Footer>
         </Layout>
-      </Layout>
-      <Footer style={{backgroundColor: 'black'}}></Footer>
-    </Layout>
-  );
+    );
 };
 
 export default MainLayout;

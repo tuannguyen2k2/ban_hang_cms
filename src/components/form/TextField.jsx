@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
 
-import { Form, Input } from "antd";
-import TextArea from "antd/es/input/TextArea";
-import useFormField from "../../hooks/useFormField";
-
+import { Form, Input } from 'antd';
+import TextArea from 'antd/es/input/TextArea';
+import useFormField from '../../hooks/useFormField';
 
 const TextField = (props) => {
     const {
@@ -60,7 +59,7 @@ const TextField = (props) => {
             validateStatus={validateStatus}
             initialValue={initialValue}
             help={help}
-            rules={[ ...rules, getTextFieldRules() ]}
+            rules={[...rules, getTextFieldRules()]}
         >
             {type === 'textarea' ? (
                 <TextArea

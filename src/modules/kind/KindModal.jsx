@@ -7,14 +7,21 @@ import useBasicForm from '../../hooks/useBasicForm';
 import useModalBase from '../../hooks/useModalBase';
 import locales from '../../locales';
 
-const CategoryModal = ({ openModal, setOpenModal, isEditing, setIsEditing, dataRowSelected, getList }) => {
+const KindModal = ({ openModal, setOpenModal, isEditing, setIsEditing, dataRowSelected, getList }) => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const categoryId = searchParams.get('categoryId');
     const { title, onSave, setIsChangedFormValues, mixinFuncs } = useModalBase({
-        apiConfig: apiConfig.category,
-        options: { objectName: locales.category, isEditing, dataRowSelected },
+        apiConfig: apiConfig.kind,
+        options: { objectName: locales.kind, isEditing, dataRowSelected },
         setOpenModal,
         getList,
         getFuncOnBack: () => {
             handleCancelModal();
+        },
+        override: (funcs) => {
+            funcs.prepareCreateData = (data) => {
+                return { ...data, categoryId };
+            };
         },
     });
     const {
@@ -43,7 +50,7 @@ const CategoryModal = ({ openModal, setOpenModal, isEditing, setIsEditing, dataR
         <BaseModal
             open={openModal}
             onCancel={handleCancelModal}
-            objectName={locales.category}
+            objectName={locales.kind}
             title={title}
             formId={mixinFuncs.getFormId()}
             form={form}
@@ -56,4 +63,4 @@ const CategoryModal = ({ openModal, setOpenModal, isEditing, setIsEditing, dataR
     );
 };
 
-export default CategoryModal;
+export default KindModal;
