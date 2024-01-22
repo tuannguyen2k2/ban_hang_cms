@@ -41,7 +41,7 @@ const CategoryListPage = () => {
                             );
                         }}
                     >
-                        {name}
+                        {name.toUpperCase()}
                     </button>
                 );
             },

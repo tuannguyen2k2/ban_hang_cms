@@ -57,7 +57,7 @@ const KindListPage = () => {
     return (
         <PageWrapper breadcrumbs={breadcrumbs}>
             <ListPage
-                title={categoryName}
+                title={categoryName.toUpperCase()}
                 actionBar={mixinFuncs.renderActionBar()}
                 baseTable={
                     <BaseTable
