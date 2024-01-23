@@ -46,6 +46,7 @@ function ActionBar({ createLink, location, style, buttons, modal = false, setOpe
                 </Link>
             </Col>
         ));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [buttons, createLink]);
 
     return (

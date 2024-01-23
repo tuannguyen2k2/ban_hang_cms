@@ -7,7 +7,6 @@ import locales from '../../locales';
 
 const ProductListPage = () => {
     const { data } = useFetch(apiConfig.category.getAll, { immediate: true });
-    console.log(data);
     const breadCrumbs = [
         {
             breadcrumbName: 'Sản phẩm',
