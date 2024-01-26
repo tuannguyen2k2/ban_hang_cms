@@ -45,6 +45,7 @@ const KindModal = ({ openModal, setOpenModal, isEditing, setIsEditing, dataRowSe
         form.setFieldsValue({
             ...dataRowSelected,
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataRowSelected]);
     return (
         <BaseModal

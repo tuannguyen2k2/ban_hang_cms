@@ -38,6 +38,7 @@ const CategoryModal = ({ openModal, setOpenModal, isEditing, setIsEditing, dataR
         form.setFieldsValue({
             ...dataRowSelected,
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataRowSelected]);
     return (
         <BaseModal

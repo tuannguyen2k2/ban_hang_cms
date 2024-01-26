@@ -48,6 +48,7 @@ const useListBase = ({
     const notification = useNotification();
     const { pathname: pagePath } = useLocation();
     const navigate = useNavigate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const queryFilter = useMemo(() => deserializeParams(queryParams), [queryParams]);
     const mappingData = (response) => {
         return {
@@ -95,7 +96,7 @@ const useListBase = ({
         const copyFilter = { ...filter };
 
         const page = parseInt(queryParams.get('page'));
-        copyFilter.page = page ? page : DEFAULT_TABLE_PAGE_START;
+        copyFilter.page = page || DEFAULT_TABLE_PAGE_START;
 
         copyFilter.pageSize = options.pageSize;
 
@@ -254,7 +255,7 @@ const useListBase = ({
                 return (
                     <span>
                         {buttons.map((ActionItem, index) => (
-                            <React.Fragment key={index}>
+                            <React.Fragment key={ActionItem}>
                                 {index > 0 && <Divider type='vertical' />}
                                 <span>
                                     {ActionItem({ ...data, ...buttonProps }) ? (
@@ -278,7 +279,7 @@ const useListBase = ({
         mixinFuncs.changeFilter(values);
     };
     const getItemDetailLink = (dataRow) => {
-        return `${pagePath}/${dataRow.id}`;
+        return `${pagePath}/${dataRow._id}`;
     };
 
     const getCreateLink = () => {
@@ -306,6 +307,7 @@ const useListBase = ({
         } else if (page <= 1 || isNaN(page)) {
             setPagination((p) => ({ ...p, current: 1 }));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [queryParams, pagePath]);
 
     const overrideHandler = () => {

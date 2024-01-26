@@ -1,6 +1,6 @@
 import axios from 'axios';
 const axiosInstance = axios.create();
-export const sendRequest = (options, payload, cancelToken) => {
+export const sendRequest = async (options, payload, cancelToken) => {
     const { params = {}, pathParams = {}, data = {} } = payload;
     let { method, baseURL, headers } = options;
     // update path params
@@ -13,25 +13,22 @@ export const sendRequest = (options, payload, cancelToken) => {
     // handle multipart
     if (options.headers['Content-Type'] === 'multipart/form-data') {
         let formData = new FormData();
-        Object.keys(data).map((item) => {
+        Object.keys(data).forEach((item) => {
             formData.append(item, data[item]);
         });
-
-        return axios
-            .post(options.path, formData, {
+        try {
+            const res = await axios.post(options.baseURL, formData, {
                 headers: {
                     'Content-type': 'multipart/form-data',
                 },
-            })
-            .then((res) => {
-                console.log(res);
-                return { data: res.data };
-            })
-            .catch((err) => {
-                console.log(err);
             });
+            console.log(res);
+            return { data: res.data };
+        } catch (err) {
+            console.log(err);
+        }
     }
-    // ...
+
     return axiosInstance.request({
         method,
         baseURL,

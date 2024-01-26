@@ -11,7 +11,7 @@ const BaseTable = ({
     columns = [],
     loading,
     pagination,
-    rowKey = (record) => record.id,
+    rowKey = (record) => record._id,
     ...props
 }) => (
     <Table

@@ -206,6 +206,7 @@ const useModalBase = ({
         if (options.isEditing) {
             mixinFuncs.getDetail();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [options.isEditing]);
     const overrideHandler = () => {
         const centralizedHandler = {

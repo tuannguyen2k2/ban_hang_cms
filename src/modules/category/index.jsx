@@ -9,7 +9,6 @@ import locales from '../../locales';
 import { convertIsoToLocalTime } from '../../utils/formatDate';
 import CategoryModal from './CategoryModal';
 import routes from '../../routes';
-import styles from './category.module.scss';
 const CategoryListPage = () => {
     const { data, loading, mixinFuncs, pagination, openModal, isEditing, dataRowSelected } = useListBase({
         apiConfig: apiConfig.category,
@@ -34,7 +33,7 @@ const CategoryListPage = () => {
             render: (name, dataRow) => {
                 return (
                     <button
-                        className={styles.textNavigate}
+                        className='textNavigate'
                         onClick={() => {
                             navigate(
                                 routes.kindListPage.path + `?categoryId=${dataRow?._id}&categoryName=${dataRow?.name}`

@@ -27,6 +27,10 @@ const locales = {
     actionFail: '${action} thất bại',
     requiredField: 'Trường bắt buộc',
     kind: 'Loại sản phẩm',
+    product: 'Sản phẩm',
+    imageProduct: 'Ảnh sản phẩm',
+    upload: 'Tải lên',
+    description: 'Mô tả',
 };
 
 export default locales;

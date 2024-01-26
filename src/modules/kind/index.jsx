@@ -13,6 +13,7 @@ import KindModal from './KindModal';
 const KindListPage = () => {
     const searchParams = new URLSearchParams(window.location.search);
     const categoryName = searchParams.get('categoryName');
+    const categoryId = searchParams.get('categoryId');
     const { data, loading, mixinFuncs, pagination, openModal, isEditing, dataRowSelected } = useListBase({
         apiConfig: apiConfig.kind,
         options: {
@@ -37,6 +38,21 @@ const KindListPage = () => {
         {
             title: locales.name,
             dataIndex: 'name',
+            render: (name, dataRow) => {
+                return (
+                    <button
+                        className='textNavigate'
+                        onClick={() => {
+                            navigate(
+                                routes.productListPage.path +
+                                    `?kindId=${dataRow?._id}&kindName=${dataRow?.name}&categoryId=${categoryId}&categoryName=${categoryName}`
+                            );
+                        }}
+                    >
+                        {name.toUpperCase()}
+                    </button>
+                );
+            },
         },
         {
             title: locales.createdAt,

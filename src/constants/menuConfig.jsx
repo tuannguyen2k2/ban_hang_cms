@@ -1,5 +1,5 @@
 import { TbCategory } from 'react-icons/tb';
-import { MdOutlineSportsMotorsports } from 'react-icons/md';
+import { GiClothes } from 'react-icons/gi';
 const navMenuConfig = [
     {
         label: 'Quản lý danh mục',
@@ -8,9 +8,9 @@ const navMenuConfig = [
         path: '/category',
     },
     {
-        label: 'Quản lý phụ tùng',
+        label: 'Quản lý sản phẩm',
         key: 'quan-ly-phu-tung',
-        icon: <MdOutlineSportsMotorsports size={20} />,
+        icon: <GiClothes size={20} />,
         path: '/product',
     },
 ];

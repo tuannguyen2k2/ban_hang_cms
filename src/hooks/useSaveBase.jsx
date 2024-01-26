@@ -110,12 +110,10 @@ const useSaveBase = ({
         setIsSubmitting(false);
         if (responseData?.data?.errors?.length) {
             mixinFuncs.onSaveError();
+        } else if (isEditing) {
+            mixinFuncs.onUpdateCompleted(responseData);
         } else {
-            if (isEditing) {
-                mixinFuncs.onUpdateCompleted(responseData);
-            } else {
-                mixinFuncs.onInsertCompleted(responseData);
-            }
+            mixinFuncs.onInsertCompleted(responseData);
         }
     };
 
@@ -142,7 +140,8 @@ const useSaveBase = ({
     };
     const handleShowErrorMessage = () => {
         notification({
-            message: locales.actionFail.replace('${actionName}', getActionName()),
+            type: 'error',
+            message: locales.actionFail.replace('${action}', getActionName()),
         });
     };
 
@@ -249,6 +248,7 @@ const useSaveBase = ({
             if (params.id === 'create') setIsEditing(false);
             else mixinFuncs.getDetail();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return {
