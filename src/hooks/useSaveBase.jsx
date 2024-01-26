@@ -92,7 +92,7 @@ const useSaveBase = ({
         setIsSubmitting(true);
         if (isEditing) {
             executeUpdate({
-                pathParams: { id: detail.id },
+                pathParams: { id: detail._id },
                 data: mixinFuncs.prepareUpdateData(values),
                 onCompleted: mixinFuncs.onSaveCompleted,
                 onError: (err) => mixinFuncs.onSaveError(err, callback),

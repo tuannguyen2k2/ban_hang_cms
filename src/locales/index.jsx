@@ -31,6 +31,7 @@ const locales = {
     imageProduct: 'Ảnh sản phẩm',
     upload: 'Tải lên',
     description: 'Mô tả',
+    errorSystem: 'Lỗi hệ thống',
 };
 
 export default locales;

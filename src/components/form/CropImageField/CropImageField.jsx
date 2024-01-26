@@ -1,13 +1,22 @@
 /* eslint-disable react/prop-types */
-import { useMemo } from 'react';
-import useFormField from '../../hooks/useFormField';
+import { useMemo, useState } from 'react';
+import useFormField from '../../../hooks/useFormField';
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
-import useNotification from '../../hooks/useNotification';
-import { Form, Upload } from 'antd';
+import useNotification from '../../../hooks/useNotification';
+import { Form, Modal, Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
+import styles from './CropImageField.module.scss';
+const getBase64 = (file) =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+    });
 function CropImageField({
     label,
     fileList,
+    setFileList,
     disabled,
     name,
     valuePropName,
@@ -26,12 +35,23 @@ function CropImageField({
     ...props
 }) {
     const { rules } = useFormField(props);
-    const notification = useNotification();
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [previewImage, setPreviewImage] = useState('');
+    const [previewTitle, setPreviewTitle] = useState('');
 
     const onUploadFile = async ({ file, onSuccess, onError }) => {
         const { uploadFile } = props;
         uploadFile(file, onSuccess, onError);
     };
+    const handlePreview = async (file) => {
+        if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj);
+        }
+        setPreviewImage(file.url || file.preview);
+        setPreviewOpen(true);
+        setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+    };
+    const handleCancel = () => setPreviewOpen(false);
 
     const getContent = () => {
         if (imageUrl && !loading) {
@@ -65,12 +85,9 @@ function CropImageField({
         return ['avatar-uploader', imgUploadedSizeAuto && 'img-uploaded-size-auto'].filter(Boolean).join(' ');
     }, []);
 
-    const handleBeforeUpload = (file) => {
-        const isPNG = file.type === 'image/png';
-        if (!isPNG) {
-            notification({ type: 'error', message: `${file.name} is not a png file` });
-        }
-        return isPNG || Upload.LIST_IGNORE;
+    const handleRemove = (file) => {
+        const updatedFileList = fileList.filter((obj) => obj.name !== file.name);
+        setFileList(updatedFileList);
     };
 
     return (
@@ -81,6 +98,7 @@ function CropImageField({
             name={name}
             rules={rules}
             valuePropName={valuePropName}
+            className={styles.formImage}
         >
             {showUploadList ? (
                 <ImgCrop aspect={aspect}>
@@ -92,9 +110,11 @@ function CropImageField({
                         listType='picture-card'
                         style={{ width: '100%', ...style }}
                         customRequest={onUploadFile}
-                        beforeUpload={beforeUpload ?? handleBeforeUpload}
+                        beforeUpload={beforeUpload}
                         onChange={onChange}
                         className={uploadClass}
+                        onPreview={handlePreview}
+                        onRemove={handleRemove}
                     >
                         {getContent()}
                     </Upload>
@@ -117,6 +137,15 @@ function CropImageField({
                     </Upload>
                 </ImgCrop>
             )}
+            <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+                <img
+                    alt='example'
+                    style={{
+                        width: '100%',
+                    }}
+                    src={previewImage}
+                />
+            </Modal>
         </Form.Item>
     );
 }
