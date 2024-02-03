@@ -71,6 +71,7 @@ const useFetchAction = (
         if (immediate) {
             execute(payload);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return { execute, loading: isLoading };
