@@ -8,6 +8,20 @@ const multipartFormHeader = {
 };
 
 const apiConfig = {
+    auth: {
+        signIn: {
+            baseURL: `${apiUrl}auth/sign-in`,
+            method: 'POST',
+            headers: baseHeader,
+        },
+    },
+    user: {
+        getProfile: {
+            baseURL: `${apiUrl}user/profile`,
+            method: 'GET',
+            headers: baseHeader,
+        },
+    },
     file: {
         download: {
             baseURL: `${apiUrl}file/download/`,

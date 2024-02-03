@@ -16,3 +16,34 @@ export const navigateTypeEnum = {
 };
 
 export const apiUrl = import.meta.env.VITE_API;
+
+export const CURRENCY_UNIT = 'Đ';
+
+export const currencyPositions = {
+    FRONT: 0,
+    BACK: 1,
+};
+
+export const appName = 'cms-ban-hang';
+
+export const storageKeys = {
+    USER_ROLE: `${appName}-user-role`,
+    USER_ACCESS_TOKEN: `${appName}-user-access-token`,
+    USER_REFRESH_TOKEN: `${appName}-user-refresh-token`,
+};
+
+export const loadingType = {
+    REDUX: 'REDUX',
+    APP: 'APP',
+};
+
+export const accessRouteTypeEnum = {
+    NOT_LOGIN: false,
+    REQUIRE_LOGIN: true,
+    BOTH: null,
+};
+
+export const UserRole = {
+    ADMIN: 'ADMIN',
+    USER: 'USER',
+};

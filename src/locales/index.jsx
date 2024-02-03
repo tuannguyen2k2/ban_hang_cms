@@ -30,8 +30,22 @@ const locales = {
     product: 'Sản phẩm',
     imageProduct: 'Ảnh sản phẩm',
     upload: 'Tải lên',
-    description: 'Mô tả',
+    descriptionProduct: 'Mô tả sản phẩm',
     errorSystem: 'Lỗi hệ thống',
+    sizeProduct: 'Kích thước sản phẩm (M,L,XL,...)',
+    colorProduct: 'Màu sắc sản phẩm (Vàng,Đỏ,Xanh,...)',
+    materialProduct: 'Chất liệu sản phẩm',
+    quantity: 'Số lượng',
+    price: 'Giá',
+    nameCategory: 'Tên danh mục',
+    nameKind: 'Tên loại sản phẩm',
+    nameProduct: 'Tên sản phẩm',
+    search: 'Tìm kiếm',
+    clear: 'Xoá',
+    signIn: 'Đăng nhập',
+    usernamePlaceHolder: 'Email/SĐT của bạn',
+    passwordPlaceHolder: 'Mật khẩu',
+    loginFailed: 'Lỗi đăng nhập',
 };
 
 export default locales;

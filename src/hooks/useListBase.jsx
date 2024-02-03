@@ -9,6 +9,7 @@ import useNotification from './useNotification';
 import useQueryParams from './useQueryParams';
 import locales from '../locales';
 import ActionBar from '../components/elements/ActionBar';
+import SearchForm from '../components/form/SearchForm';
 
 const useListBase = ({
     apiConfig = {
@@ -298,6 +299,37 @@ const useListBase = ({
             />
         );
     };
+    const renderSearchForm = ({
+        fields = [],
+        getFormInstance,
+        hiddenAction,
+        className,
+        initialValues,
+        onSearch,
+        onReset,
+        alignSearchField = 'left',
+        activeTab,
+    }) => {
+        return (
+            <SearchForm
+                activeTab={activeTab}
+                getFormInstance={getFormInstance}
+                alignSearchField={alignSearchField}
+                fields={fields}
+                initialValues={initialValues}
+                onSearch={(values) => {
+                    mixinFuncs.handleFilterSearchChange(values);
+                    onSearch?.(values);
+                }}
+                hiddenAction={hiddenAction}
+                className={className}
+                onReset={() => {
+                    mixinFuncs.changeFilter({});
+                    onReset?.();
+                }}
+            />
+        );
+    };
 
     useEffect(() => {
         mixinFuncs.getList();
@@ -335,6 +367,7 @@ const useListBase = ({
             getCreateLink,
             setOpenModal,
             setIsEditing,
+            renderSearchForm,
         };
 
         override?.(centralizedHandler);

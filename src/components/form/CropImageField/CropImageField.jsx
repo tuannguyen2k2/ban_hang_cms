@@ -83,6 +83,7 @@ function CropImageField({
 
     const uploadClass = useMemo(() => {
         return ['avatar-uploader', imgUploadedSizeAuto && 'img-uploaded-size-auto'].filter(Boolean).join(' ');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleRemove = (file) => {

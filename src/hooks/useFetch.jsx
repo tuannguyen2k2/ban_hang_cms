@@ -16,19 +16,19 @@ const useFetch = (apiConfig, { immediate = false, mappingData, params = {}, path
             }
             try {
                 const { data } = await sendRequest(apiConfig, { params, pathParams, ...payload }, cancelType);
-                if (!data.result && data.statusCode !== 200 && apiConfig.baseURL != apiUrl.account.loginBasic.baseURL) {
+                if (!data.result && data.statusCode !== 200) {
                     throw data;
                 }
                 if (isMounted()) {
                     !cancelType && setData(mappingData ? mappingData(data) : data);
                 }
-                onCompleted && onCompleted(data);
+                onCompleted?.(data);
                 return data;
             } catch (error) {
                 if (isMounted()) {
                     !cancelType && setError(error);
                 }
-                onError && onError(error);
+                onError?.(error);
                 return error;
             } finally {
                 if (isMounted()) {
@@ -36,6 +36,7 @@ const useFetch = (apiConfig, { immediate = false, mappingData, params = {}, path
                 }
             }
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [apiConfig]
     );
     useEffect(() => {

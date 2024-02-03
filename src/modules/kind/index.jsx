@@ -14,12 +14,27 @@ const KindListPage = () => {
     const searchParams = new URLSearchParams(window.location.search);
     const categoryName = searchParams.get('categoryName');
     const categoryId = searchParams.get('categoryId');
-    const { data, loading, mixinFuncs, pagination, openModal, isEditing, dataRowSelected } = useListBase({
+    const {
+        data,
+        loading,
+        mixinFuncs,
+        pagination,
+        openModal,
+        isEditing,
+        dataRowSelected,
+        serializeParams,
+        setQueryParams,
+    } = useListBase({
         apiConfig: apiConfig.kind,
         options: {
             pageSize: DEFAULT_TABLE_ITEM_SIZE,
             objectName: locales.kind,
             hasModal: true,
+        },
+        override: (funcs) => {
+            funcs.changeFilter = (filter) => {
+                setQueryParams(serializeParams({ categoryId, categoryName, ...filter }));
+            };
         },
     });
 
@@ -36,7 +51,7 @@ const KindListPage = () => {
     ];
     const columns = [
         {
-            title: locales.name,
+            title: locales.nameKind,
             dataIndex: 'name',
             render: (name, dataRow) => {
                 return (
@@ -57,6 +72,7 @@ const KindListPage = () => {
         {
             title: locales.createdAt,
             dataIndex: 'createdAt',
+            align: 'center',
             render: (createdAt) => {
                 return convertIsoToLocalTime(createdAt);
             },
@@ -64,17 +80,27 @@ const KindListPage = () => {
         {
             title: locales.updatedAt,
             dataIndex: 'updatedAt',
+            align: 'center',
             render: (updatedAt) => {
                 return convertIsoToLocalTime(updatedAt);
             },
         },
         mixinFuncs.renderActionColumn({ edit: true, delete: true }, { width: '150px' }),
     ];
+    const searchFields = [
+        {
+            key: 'name',
+            placeholder: locales.nameKind,
+        },
+    ];
     return (
         <PageWrapper breadcrumbs={breadcrumbs}>
             <ListPage
                 title={categoryName.toUpperCase()}
                 actionBar={mixinFuncs.renderActionBar()}
+                searchForm={mixinFuncs.renderSearchForm({
+                    fields: searchFields,
+                })}
                 baseTable={
                     <BaseTable
                         columns={columns}

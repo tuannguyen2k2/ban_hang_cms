@@ -2,25 +2,24 @@
 import { Form, InputNumber } from 'antd';
 import useFormField from '../../hooks/useFormField';
 
-const NumericField = (props) => {
-    const {
-        label,
-        name,
-        disabled,
-        min,
-        max,
-        width,
-        onChange,
-        onBlur,
-        formatter,
-        parser,
-        className,
-        defaultValue,
-        required,
-        readOnly,
-        addonAfter,
-    } = props;
-
+const NumericField = ({
+    label,
+    name,
+    disabled,
+    min,
+    max,
+    width,
+    onChange,
+    onBlur,
+    formatter,
+    parser,
+    className,
+    defaultValue,
+    required,
+    readOnly,
+    addonAfter,
+    ...props
+}) => {
     const fieldParser = (value) => {
         return value.replace(/\$\s?|(,*)/g, '');
     };

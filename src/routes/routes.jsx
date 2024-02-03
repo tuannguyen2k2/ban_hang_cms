@@ -4,23 +4,34 @@ import AppNavigate from '../modules/main/AppNavigate';
 
 import routes from '.';
 import MainLayout from '../modules/main/MainLayout';
+import ValidateAccess from './ValidateAccess';
+import Loading from '../components/form/loading';
+import useAuth from '../hooks/useAuth';
 
 const routesArray = Object.values(routes);
 
 const AppRoutes = () => {
+    const { isAuthenticated, loading: loadingProfile } = useAuth();
     const renderRoute = (route) => {
-        const Component = route.component;
         return (
             <Route
                 key={route.path || 'not-found'}
                 path={route.path}
                 index={route.index}
                 element={
-                    <MainLayout>
-                        <Component>
-                            <Outlet />
-                        </Component>
-                    </MainLayout>
+                    loadingProfile ? (
+                        <Loading show />
+                    ) : (
+                        <ValidateAccess
+                            authRequire={route.auth}
+                            component={route.component}
+                            componentProps={route.componentProps}
+                            isAuthenticated={isAuthenticated}
+                            layout={route.layout}
+                            path={route.path}
+                            pageOptions={route.pageOptions}
+                        />
+                    )
                 }
             />
         );

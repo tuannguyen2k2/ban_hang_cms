@@ -1,8 +1,18 @@
 import axios from 'axios';
+import { getCacheAccessToken } from './userService';
 const axiosInstance = axios.create();
 export const sendRequest = async (options, payload, cancelToken) => {
     const { params = {}, pathParams = {}, data = {} } = payload;
-    let { method, baseURL, headers } = options;
+    let { method, baseURL, headers, ignoreAuth, authorization } = options;
+    const userAccessToken = getCacheAccessToken();
+    if (!ignoreAuth && userAccessToken) {
+        headers.Authorization = `Bearer ${userAccessToken}`;
+    }
+
+    if (authorization) {
+        headers.Authorization = authorization;
+    }
+
     // update path params
     for (let key of Object.keys(pathParams)) {
         const keyCompare = `:${key}`;
@@ -19,6 +29,7 @@ export const sendRequest = async (options, payload, cancelToken) => {
         try {
             const res = await axios.post(options.baseURL, formData, {
                 headers: {
+                    Authorization: headers.Authorization,
                     'Content-type': 'multipart/form-data',
                 },
             });

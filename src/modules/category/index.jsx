@@ -6,9 +6,9 @@ import useListBase from '../../hooks/useListBase';
 import ListPage from '../../layouts/ListPage';
 import PageWrapper from '../../layouts/PageWrapper';
 import locales from '../../locales';
+import routes from '../../routes';
 import { convertIsoToLocalTime } from '../../utils/formatDate';
 import CategoryModal from './CategoryModal';
-import routes from '../../routes';
 const CategoryListPage = () => {
     const { data, loading, mixinFuncs, pagination, openModal, isEditing, dataRowSelected } = useListBase({
         apiConfig: apiConfig.category,
@@ -18,7 +18,6 @@ const CategoryListPage = () => {
             hasModal: true,
         },
     });
-
     const navigate = useNavigate();
 
     const breadcrumbs = [
@@ -28,7 +27,7 @@ const CategoryListPage = () => {
     ];
     const columns = [
         {
-            title: locales.name,
+            title: locales.nameCategory,
             dataIndex: 'name',
             render: (name, dataRow) => {
                 return (
@@ -47,6 +46,7 @@ const CategoryListPage = () => {
         },
         {
             title: locales.createdAt,
+            align: 'center',
             dataIndex: 'createdAt',
             render: (createdAt) => {
                 return convertIsoToLocalTime(createdAt);
@@ -54,6 +54,7 @@ const CategoryListPage = () => {
         },
         {
             title: locales.updatedAt,
+            align: 'center',
             dataIndex: 'updatedAt',
             render: (updatedAt) => {
                 return convertIsoToLocalTime(updatedAt);
@@ -61,10 +62,19 @@ const CategoryListPage = () => {
         },
         mixinFuncs.renderActionColumn({ edit: true, delete: true }, { width: '150px' }),
     ];
+    const searchFields = [
+        {
+            key: 'name',
+            placeholder: locales.nameCategory,
+        },
+    ];
     return (
         <PageWrapper breadcrumbs={breadcrumbs}>
             <ListPage
                 actionBar={mixinFuncs.renderActionBar()}
+                searchForm={mixinFuncs.renderSearchForm({
+                    fields: searchFields,
+                })}
                 baseTable={
                     <BaseTable
                         columns={columns}

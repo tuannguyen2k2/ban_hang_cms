@@ -10,6 +10,9 @@ import useBasicForm from '../../hooks/useBasicForm';
 import useFetch from '../../hooks/useFetch';
 import useNotification from '../../hooks/useNotification';
 import locales from '../../locales';
+import InputTagField from '../../components/form/InputTagField';
+import NumericField from '../../components/form/NumericField';
+import { CURRENCY_UNIT } from '../../constants';
 
 const ProductForm = (props) => {
     const { formId, actions, dataDetail, onSubmit, setIsChangedFormValues } = props;
@@ -68,9 +71,49 @@ const ProductForm = (props) => {
                         <TextField label={locales.name} name='name' required />
                     </Col>
                     <Col span={12}>
-                        <TextField label={locales.description} name='description' />
+                        <NumericField
+                            name='price'
+                            label={locales.price}
+                            min={0}
+                            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            addonAfter={CURRENCY_UNIT}
+                        />
                     </Col>
                 </Row>
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <InputTagField
+                            name='size'
+                            label={locales.sizeProduct}
+                            setIsChangedFormValues={setIsChangedFormValues}
+                            form={form}
+                        />
+                    </Col>
+                    <Col span={12}>
+                        <InputTagField
+                            name='color'
+                            label={locales.colorProduct}
+                            setIsChangedFormValues={setIsChangedFormValues}
+                            form={form}
+                        />
+                    </Col>
+                </Row>
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <InputTagField
+                            name='material'
+                            label={locales.materialProduct}
+                            setIsChangedFormValues={setIsChangedFormValues}
+                            form={form}
+                        />
+                    </Col>
+                    <Col span={12}>
+                        <NumericField name='quantity' label={locales.quantity} min={0} />
+                    </Col>
+                </Row>
+
+                <TextField label={locales.descriptionProduct} name='description' type='textarea' />
+
                 <Row gutter={16}>
                     <CropImageField
                         label={locales.imageProduct}
