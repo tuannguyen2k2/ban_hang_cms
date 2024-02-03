@@ -19,6 +19,7 @@ const NavSider = ({ collapsed, onCollapse, width }) => {
             selectedKeys: [],
             openKeys: [],
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
 
     function findActiveNav(navs) {

@@ -1,5 +1,5 @@
 import { Button, Form } from 'antd';
-import Title from 'antd/es/skeleton/Title';
+import Title from 'antd/es/typography/Title';
 import styles from './signIn.module.scss';
 import locales from '../../locales';
 import InputTextField from '../../components/form/InputTextField';
@@ -28,14 +28,14 @@ export const SignInPage = () => {
             },
             onError: (error) => {
                 console.log(error);
-                notification({ type: 'error', message: locales.loginFailed });
+                notification({ type: 'error', message: locales.signInFailed });
             },
         });
     };
 
     return (
-        <div className={styles.loginPage}>
-            <div className={styles.loginForm}>
+        <div className={styles.signInPage}>
+            <div className={styles.signInForm}>
                 <Title level={3}>{locales.signIn.toUpperCase()}</Title>
                 <Form name='login-form' onFinish={onFinish} layout='vertical'>
                     <InputTextField

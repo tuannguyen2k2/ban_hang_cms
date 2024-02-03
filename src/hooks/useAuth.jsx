@@ -1,14 +1,14 @@
+import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { accountSelector } from '../selector';
+import { UserRole } from '../constants';
+import { profileSelector } from '../selector';
 import { getCacheAccessToken } from '../services/userService';
-import useFetchAction from './useFetchAction';
 import { getProfile } from '../store/slice/accountSlice';
 import useActionLoading from './useActionLoading';
-import { useCallback } from 'react';
-import { UserRole } from '../constants';
+import useFetchAction from './useFetchAction';
 
 const useAuth = () => {
-    const profile = useSelector(accountSelector);
+    const profile = useSelector(profileSelector);
     const token = getCacheAccessToken();
 
     const immediate = !!token && !profile;
@@ -24,6 +24,7 @@ const useAuth = () => {
     const isUser = useCallback(() => {
         return role === UserRole.USER;
     }, [role]);
+    console.log(profile);
 
     return {
         isAdmin,

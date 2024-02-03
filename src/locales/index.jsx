@@ -45,7 +45,7 @@ const locales = {
     signIn: 'Đăng nhập',
     usernamePlaceHolder: 'Email/SĐT của bạn',
     passwordPlaceHolder: 'Mật khẩu',
-    loginFailed: 'Lỗi đăng nhập',
+    signInFailed: 'Lỗi đăng nhập',
 };
 
 export default locales;

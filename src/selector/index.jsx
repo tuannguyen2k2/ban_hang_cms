@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-export const accountSelector = (state) => state.account;
+export const profileSelector = (state) => state.account.profile;
 export const selectActionLoading = (type) =>
     createSelector(
         (state) => state.app[type],
