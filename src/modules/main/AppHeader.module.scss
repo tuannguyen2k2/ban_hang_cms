@@ -1,18 +1,35 @@
-.header {
+.appHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 0;
-    background: 'white';
-}
-.logo {
-    float: left;
-    color: white;
-    font-size: 18px;
-}
+    box-shadow: 4px 4px 40px 0 rgba(0,0,0,.05);
+    z-index: 1;
 
-.brand {
-    color: black;
-    font-size: 18px;
-}
+    .iconCollapse {
+        padding: 0 22px;
+        height: 64px;
+        cursor: pointer;
+        transition: all .3s,padding 0s;
+        font-size: 20px;
+        flex-shrink: 0;
+        border: none;
+        background-color: transparent;
 
-.menu {
-    float: right;
+        .trigger {
+            font-size: 22px;
+        }
+    }
+
+    .logout{
+        font-family: 'Mulish';
+        height: 40px;
+        margin-right: 20px;
+        display: flex;
+        align-items: center;
+        border: none;
+        box-shadow: none;
+        background-color: transparent;
+        cursor: pointer;
+    }
 }

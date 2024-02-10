@@ -4,7 +4,8 @@ import Sider from 'antd/es/layout/Sider';
 import { useMemo } from 'react';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import navMenuConfig from '../../constants/menuConfig';
-
+import styles from './NavSider.module.scss';
+import banner from '/public/banner.png';
 const NavSider = ({ collapsed, onCollapse, width }) => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -58,17 +59,13 @@ const NavSider = ({ collapsed, onCollapse, width }) => {
     }
 
     return (
-        <Sider
-            style={{ height: 'calc(100vh - 48px - 64px)' }}
-            collapsible
-            collapsed={collapsed}
-            width={width}
-            onCollapse={onCollapse}
-            trigger={null}
-        >
+        <Sider collapsible collapsed={collapsed} width={width} onCollapse={onCollapse} trigger={null}>
+            <div data-collapsed={collapsed} className={styles.logo} style={{ width: '100%' }}>
+                <img src={banner} alt='Mira' />
+            </div>
             <Menu
                 key={location.pathname == '/' ? 'initial' : 'navSider'}
-                theme='light'
+                theme='dark'
                 mode='inline'
                 defaultSelectedKeys={activeNav.selectedKeys}
                 defaultOpenKeys={activeNav.openKeys}

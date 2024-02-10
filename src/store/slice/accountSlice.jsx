@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createFailureActionType } from '../utils';
 export const accountSlice = createSlice({
     name: 'account',
     initialState: {
@@ -10,8 +9,11 @@ export const accountSlice = createSlice({
         getProfile: (state, action) => {
             state.profile = action.payload;
         },
+        logout: (state, action) => {
+            state.profile = null;
+        },
     },
 });
 
-export const { login, getProfile, getProfileFailure } = accountSlice.actions;
+export const { login, getProfile, logout } = accountSlice.actions;
 export default accountSlice.reducer;
