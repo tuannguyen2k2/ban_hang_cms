@@ -4,7 +4,6 @@ import { showAppLoading, hideAppLoading, toggleActionLoading } from '../store/sl
 import useActionLoading from './useActionLoading';
 import { createFailureActionType, createSuccessActionType } from '../store/utils';
 import { loadingType } from '../constants';
-import { getProfileFailure } from '../store/slice/accountSlice';
 
 const handleByType = (typeConfig, handler) => {
     if (!typeConfig) {
