@@ -16,7 +16,7 @@ const useBasicForm = ({ onSubmit, setIsChangedFormValues, onResetForm, override,
                 ...formValues,
                 ...otherData,
             },
-            mixinFuncs.handleCallBackAfterSubmitForm,
+            mixinFuncs.handleCallBackAfterSubmitForm
         );
     };
 
@@ -24,7 +24,10 @@ const useBasicForm = ({ onSubmit, setIsChangedFormValues, onResetForm, override,
         const { data } = response;
         let errorField = [];
         if (!data?.result && data?.data?.length > 0) {
-            errorField = data?.data?.map((err) => ({ name: err.field, errors: [err.message] }));
+            errorField = data?.data?.map((err) => ({
+                name: err.field,
+                errors: [err.message],
+            }));
             form.setFields(errorField);
         }
     };

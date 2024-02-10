@@ -1,6 +1,6 @@
-import locales from "../locales";
+import locales from '../locales';
 
-const useFormField = ({ requiredMsg, placeholder, required, rules}) => {
+const useFormField = ({ requiredMsg, placeholder, required, rules }) => {
     // const { dataDetail } = useListBase();
 
     const getRequiredMsg = () => {
@@ -32,7 +32,7 @@ const useFormField = ({ requiredMsg, placeholder, required, rules}) => {
     };
 
     const mergeRules = (rulesA, rulesB) => {
-        return [ ...rulesA, ...rulesB ];
+        return [...rulesA, ...rulesB];
     };
 
     return {

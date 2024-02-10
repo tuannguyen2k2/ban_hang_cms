@@ -13,3 +13,14 @@ body {
     margin: 0;
     padding: 0;
 }
+.textNavigate{
+    display: inline-block;
+    color: black;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    font-weight: 600;
+    &:hover {
+        text-decoration: underline;
+      }
+}

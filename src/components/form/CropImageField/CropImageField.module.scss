@@ -1,0 +1,9 @@
+.formImage{
+    margin-left: 8px;
+}
+:global {
+    .ant-upload-list-item-container:not(:first-child), 
+    .ant-upload-list-item-container + .ant-upload-select {
+      margin-inline-start: 20px!important;
+    }
+}
