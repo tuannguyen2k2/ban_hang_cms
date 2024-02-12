@@ -15,7 +15,9 @@ const MainLayout = ({ children }) => {
                 <AppHeader collapsed={collapsed} onCollapse={toggleCollapsed} />
                 <Content>
                     <div style={{ minHeight: 'calc(100vh - 113px)' }}>{children}</div>
-                    <Footer style={{ backgroundColor: '#ccc' }}></Footer>
+                    <Footer style={{ backgroundColor: '#ccc', textAlign: 'center', padding: '15px' }}>
+                        <span>Copyright@tuannguyennocode</span>
+                    </Footer>
                 </Content>
             </Layout>
         </Layout>
