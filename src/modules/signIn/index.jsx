@@ -12,6 +12,7 @@ import { storageKeys } from '../../constants';
 import useNotification from '../../hooks/useNotification';
 import useFetchAction from '../../hooks/useFetchAction';
 import { getProfile } from '../../store/slice/accountSlice';
+import { useEffect } from 'react';
 export const SignInPage = () => {
     const { execute, loading } = useFetch(apiConfig.auth.signIn);
     const { execute: executeGetProfile } = useFetchAction(getProfile, {
@@ -37,7 +38,15 @@ export const SignInPage = () => {
         <div className={styles.signInPage}>
             <div className={styles.signInForm}>
                 <Title level={3}>{locales.signIn.toUpperCase()}</Title>
-                <Form name='login-form' onFinish={onFinish} layout='vertical'>
+                <Form
+                    name='login-form'
+                    onFinish={onFinish}
+                    layout='vertical'
+                    initialValues={{
+                        username: '0779740264',
+                        password: '123456',
+                    }}
+                >
                     <InputTextField
                         name='username'
                         fieldProps={{ prefix: <UserOutlined /> }}

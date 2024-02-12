@@ -26,7 +26,7 @@ const AppHeader = ({ collapsed, onCollapse }) => {
             <button className={styles.iconCollapse} onClick={onCollapse}>
                 {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </button>
-            <span style={{ fontSize: '20px', fontWeight: 800, color: '#ccc' }}>HỆ THỐNG QUẢN LÝ CỦA QUẢN TRỊ VIÊN</span>
+            <span style={{ fontSize: '20px', fontWeight: 800, color: '#ccc' }}>{locales.titleHeader}</span>
             <button className={styles.logout} onClick={handleLogout}>
                 <span style={{ marginRight: '8px' }}>{locales.logout}</span>
                 <IoLogOutOutline size={30} />

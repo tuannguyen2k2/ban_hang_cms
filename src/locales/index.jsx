@@ -1,4 +1,14 @@
 const locales = {
+    analytic: 'Thống kê',
+    noticeDeveloping: 'Chức năng đang được phát triển.',
+    passwordNotMatchError: 'Mật khẩu không trùng khớp',
+    lengthPasswordError: 'Mật khẩu ít nhất 6 ký tự',
+    password: 'Mật khẩu',
+    passwordConfirm: 'Xác nhận mật khẩu',
+    email: 'Email',
+    phone: 'Số điện thoại',
+    nameCustomer: 'Tên khách hàng',
+    customer: 'Khách hàng',
     home: 'Trang chủ',
     name: 'Tên',
     createdAt: 'Ngày tạo',
@@ -47,6 +57,8 @@ const locales = {
     passwordPlaceHolder: 'Mật khẩu',
     signInFailed: 'Lỗi đăng nhập',
     logout: 'Đăng xuất',
+    titleHeader: 'HỆ THỐNG QUẢN LÝ CỦA QUẢN TRỊ VIÊN',
+    order: 'Đơn hàng',
 };
 
 export default locales;

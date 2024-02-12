@@ -110,7 +110,7 @@ const ProductListPage = () => {
     return (
         <PageWrapper breadcrumbs={breadcrumbs}>
             <ListPage
-                title={kindName}
+                title={kindName.toUpperCase()}
                 actionBar={mixinFuncs.renderActionBar()}
                 searchForm={mixinFuncs.renderSearchForm({
                     fields: searchFields,

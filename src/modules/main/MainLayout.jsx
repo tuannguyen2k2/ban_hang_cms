@@ -14,7 +14,7 @@ const MainLayout = ({ children }) => {
             <Layout>
                 <AppHeader collapsed={collapsed} onCollapse={toggleCollapsed} />
                 <Content>
-                    <div>{children}</div>
+                    <div style={{ minHeight: 'calc(100vh - 113px)' }}>{children}</div>
                     <Footer style={{ backgroundColor: '#ccc' }}></Footer>
                 </Content>
             </Layout>

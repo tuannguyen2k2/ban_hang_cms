@@ -21,6 +21,22 @@ const apiConfig = {
             method: 'GET',
             headers: baseHeader,
         },
+        getList: { baseURL: `${apiUrl}user`, method: 'GET', headers: baseHeader },
+        create: {
+            baseURL: `${apiUrl}user`,
+            method: 'POST',
+            headers: baseHeader,
+        },
+        update: {
+            baseURL: `${apiUrl}user/:id`,
+            method: 'PUT',
+            headers: baseHeader,
+        },
+        getById: {
+            baseURL: `${apiUrl}user/:id`,
+            method: 'GET',
+            headers: baseHeader,
+        },
     },
     file: {
         download: {

@@ -138,11 +138,12 @@ function CropImageField({
                     </Upload>
                 </ImgCrop>
             )}
-            <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+            <Modal open={previewOpen} footer={null} onCancel={handleCancel}>
                 <img
-                    alt='example'
+                    alt='image'
                     style={{
                         width: '100%',
+                        padding: '20px',
                     }}
                     src={previewImage}
                 />

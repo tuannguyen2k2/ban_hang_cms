@@ -122,6 +122,7 @@ const ProductForm = (props) => {
                         showUploadList={true}
                         maxFile={6}
                         uploadFile={uploadFile}
+                        aspect={3 / 4}
                     />
                 </Row>
                 <div className='footer-card-form'>{actions}</div>
