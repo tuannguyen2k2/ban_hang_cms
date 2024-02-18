@@ -5,7 +5,6 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import locales from '../locales';
 import useFetch from './useFetch';
 import useNotification from './useNotification';
-
 const useSaveBase = ({
     apiConfig = {
         getById: null,
