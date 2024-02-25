@@ -38,7 +38,7 @@ const ProductForm = (props) => {
                     if (response.result === true) {
                         onSuccess();
                         const name = response.data.fileName;
-                        const url = apiConfig.file.download.baseURL + name;
+                        const url = response.data.urlFile;
                         const updatedFileList = fileList.filter((obj) => obj.status !== 'uploading');
                         setFileList([...updatedFileList, { name, url }]);
                         setIsChangedFormValues(true);
