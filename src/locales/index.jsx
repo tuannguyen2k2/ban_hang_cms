@@ -1,4 +1,6 @@
 const locales = {
+    setting: 'Cài đặt',
+    banner: 'Banner',
     footer: 'Copyright@tuannguyennocode',
     analytic: 'Thống kê',
     noticeDeveloping: 'Chức năng đang được phát triển.',

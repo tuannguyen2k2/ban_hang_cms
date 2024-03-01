@@ -131,6 +131,18 @@ const apiConfig = {
             headers: baseHeader,
         },
     },
+    setting: {
+        getList: {
+            baseURL: `${apiUrl}setting`,
+            method: 'GET',
+            headers: baseHeader,
+        },
+        update: {
+            baseURL: `${apiUrl}setting/:id`,
+            method: 'PUT',
+            headers: baseHeader,
+        },
+    },
 };
 
 export default apiConfig;

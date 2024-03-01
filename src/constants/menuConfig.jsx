@@ -1,6 +1,7 @@
 import { BsFillPeopleFill } from 'react-icons/bs';
 import { GiClothes, GiStabbedNote } from 'react-icons/gi';
 import { SiGoogleanalytics } from 'react-icons/si';
+import { IoMdSettings } from 'react-icons/io';
 const navMenuConfig = [
     {
         label: 'Quản lý sản phẩm',
@@ -25,6 +26,12 @@ const navMenuConfig = [
         key: 'thong-ke',
         icon: <SiGoogleanalytics size={19} />,
         path: '/analytic',
+    },
+    {
+        label: 'Cài đặt',
+        key: 'cai-dat',
+        icon: <IoMdSettings size={20} />,
+        path: '/setting',
     },
 ];
 

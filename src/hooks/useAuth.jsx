@@ -24,7 +24,6 @@ const useAuth = () => {
     const isUser = useCallback(() => {
         return role === UserRole.USER;
     }, [role]);
-    console.log(profile);
 
     return {
         isAdmin,

@@ -63,7 +63,6 @@ const useListBase = ({
 
     const onCompletedGetList = (response) => {
         const { data, total } = mixinFuncs.mappingData(response);
-
         setData(data);
         setPagination((p) => ({ ...p, total }));
     };

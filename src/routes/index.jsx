@@ -6,6 +6,7 @@ import SignInPage from '../modules/signIn';
 import customerRoutes from '../modules/customer/routes';
 import orderRoutes from '../modules/order/routes';
 import analyticRoutes from '../modules/analytic/routes';
+import SettingPage from '../modules/setting';
 
 const routes = {
     homePage: {
@@ -17,6 +18,11 @@ const routes = {
         path: '/sign-in',
         auth: false,
         component: SignInPage,
+    },
+    settingPage: {
+        path: '/setting',
+        auth: true,
+        component: SettingPage,
     },
     ...categoryRoutes,
     ...productRoutes,
