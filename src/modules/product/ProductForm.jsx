@@ -13,6 +13,7 @@ import locales from '../../locales';
 import InputTagField from '../../components/form/InputTagField';
 import NumericField from '../../components/form/NumericField';
 import { CURRENCY_UNIT } from '../../constants';
+import RichTextField from '../../components/form/RichTextField';
 
 const ProductForm = (props) => {
     const { formId, actions, dataDetail, onSubmit, setIsChangedFormValues } = props;
@@ -112,7 +113,13 @@ const ProductForm = (props) => {
                     </Col>
                 </Row>
 
-                <TextField label={locales.descriptionProduct} name='description' type='textarea' />
+                <RichTextField
+                    style={{ height: 200, marginBottom: 70 }}
+                    label={locales.descriptionProduct}
+                    name='description'
+                    setIsChangedFormValues={setIsChangedFormValues}
+                    form={form}
+                />
 
                 <Row gutter={16}>
                     <CropImageField
